@@ -34,7 +34,16 @@ export default async function handler(req, res) {
 
     const rawBody = req.body;
     const body = rawBody && typeof rawBody === 'string' ? JSON.parse(rawBody) : (rawBody || {});
-    const messages = trimMessages(body.messages);
+    const messages = trimMessages(body.messages).map((m) => {
+      // Groq expects `message.content` to be either a string or an array (per OpenAI format).
+      // If we receive a structured error object (from the frontend), coerce to string.
+      const content = m && m.content;
+      let nextContent = content;
+      if (typeof content !== 'string' && !Array.isArray(content)) {
+        nextContent = content == null ? '' : JSON.stringify(content);
+      }
+      return { ...m, content: nextContent };
+    });
 
     if (!messages.length) {
       return res.status(400).json({ error: '`messages` must be a non-empty array.' });

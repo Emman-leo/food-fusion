@@ -670,7 +670,13 @@ if (chatToggleBtn) {
       })
       .then(data => {
         thinking.remove();
-        const reply = data?.choices?.[0]?.message?.content || data?.error || 'Sorry, I could not get a response.';
+        const replyFromChoice = data?.choices?.[0]?.message?.content;
+        let reply =
+          replyFromChoice ||
+          (typeof data?.error === 'string' ? data.error : data?.error?.message);
+
+        if (!reply) reply = 'Sorry, I could not get a response.';
+        if (typeof reply !== 'string') reply = JSON.stringify(reply);
         chatHistory.push({ role: 'assistant', content: reply });
         appendMessage('assistant', reply);
       })
