@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Community Cookbook — Culina</title>
+    <meta name="description" content="The Culina community cookbook — recipes submitted by home cooks from around the world." />
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@100..900&family=JetBrains+Mono:wght@100..800&display=swap" rel="stylesheet">
+    <style>
+        .submit-card { border: 2px solid #000; padding: 2.5rem; background: #fff; }
+        .submit-card h3 { font-family: var(--font-display); font-size: 1.75rem; font-weight: 800; text-transform: uppercase; margin-bottom: 1.5rem; }
+        .community-post { border: 2px solid #000; overflow: hidden; background: #fff; transition: transform 0.2s; }
+        .community-post:hover { transform: translate(-4px, -4px); box-shadow: 8px 8px 0 #000; }
+        .community-post img { width: 100%; aspect-ratio: 4/3; object-fit: cover; display: block; }
+        .community-post-body { padding: 1.5rem; }
+        .community-post-author { font-family: var(--font-mono); font-size: 0.75rem; text-transform: uppercase; color: var(--color-brutal-orange); margin-bottom: 0.5rem; }
+        .community-post-title { font-family: var(--font-display); font-size: 1.5rem; font-weight: 800; text-transform: uppercase; margin-bottom: 0.75rem; }
+        .community-post-desc { font-size: 0.9rem; line-height: 1.5; opacity: 0.8; }
+    </style>
+</head>
+<body>
+<div id="app">
+    <div class="marquee-container">
+        <div class="animate-marquee">
+            <div class="marquee-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#FF4F00" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg> Cooking is an Art, Eating is a Passion</div>
+            <div class="marquee-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#FF4F00" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg> Cooking is an Art, Eating is a Passion</div>
+            <div class="marquee-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#FF4F00" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg> Cooking is an Art, Eating is a Passion</div>
+        </div>
+    </div>
+    <nav>
+        <div class="nav-logo"><a href="index.html" style="text-decoration:none;color:inherit;display:flex;align-items:center;gap:1rem"><h1>CULINA</h1><div class="nav-logo-box"></div></a></div>
+        <button class="hamburger-btn" id="hamburger-btn" aria-label="Open menu" aria-expanded="false">
+            <span class="hamburger-line"></span><span class="hamburger-line"></span><span class="hamburger-line"></span>
+        </button>
+        <div class="nav-search">
+            <div class="search-container">
+                <svg class="search-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                <input type="text" placeholder="SEARCH RECIPES..." class="search-input" onkeydown="if(event.key==='Enter')window.location='recipes.html'" />
+            </div>
+        </div>
+        <div class="nav-cta"><button class="nav-btn active">Join Club</button></div>
+    </nav>
+    <div class="nav-drawer" id="nav-drawer" aria-hidden="true">
+        <div class="nav-drawer-overlay" id="nav-drawer-overlay"></div>
+        <div class="nav-drawer-panel">
+            <button class="drawer-close-btn" id="drawer-close-btn">✕</button>
+            <nav class="drawer-links">
+                <a href="index.html" class="drawer-link">Home</a>
+                <a href="about.html" class="drawer-link">About Us</a>
+                <a href="recipes.html" class="drawer-link">Recipe Collection</a>
+                <a href="cookbook.html" class="drawer-link">Cookbook</a>
+                <a href="contact.html" class="drawer-link">Contact Us</a>
+                <a href="culinary-resources.html" class="drawer-link">Culinary Resources</a>
+                <a href="resources.html" class="drawer-link">Resources</a>
+            </nav>
+        </div>
+    </div>
+
+    <header style="border-bottom:2px solid #000;background:#000;color:#fff;padding:5rem 2rem">
+        <span style="font-family:var(--font-mono);font-size:0.75rem;text-transform:uppercase;letter-spacing:0.3em;color:var(--color-brutal-orange);display:block;margin-bottom:1rem">// Community Recipes</span>
+        <h2 style="font-family:var(--font-display);font-size:clamp(3rem,8vw,7rem);font-weight:800;text-transform:uppercase;line-height:1">THE<br>COOKBOOK</h2>
+    </header>
+
+    <!-- Community Posts -->
+    <section style="padding:3rem 2rem;border-bottom:2px solid #000;background:#f5f5f5">
+        <h3 style="font-family:var(--font-display);font-size:2rem;font-weight:800;text-transform:uppercase;margin-bottom:2rem">Featured Community Recipes</h3>
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:2rem">
+            <div class="community-post">
+                <img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?auto=format&fit=crop&q=80&w=800" alt="Jollof Rice" referrerpolicy="no-referrer">
+                <div class="community-post-body">
+                    <div class="community-post-author">By Amara K. · West African</div>
+                    <div class="community-post-title">West African Jollof Rice</div>
+                    <p class="community-post-desc">The real one — smoky, perfectly spiced, and cooked in rich tomato stew.</p>
+                </div>
+            </div>
+            <div class="community-post">
+                <img src="https://images.unsplash.com/photo-1555126634-323283e090fa?auto=format&fit=crop&q=80&w=800" alt="Dumplings" referrerpolicy="no-referrer">
+                <div class="community-post-body">
+                    <div class="community-post-author">By Wei L. · Chinese</div>
+                    <div class="community-post-title">Grandma's Pork Dumplings</div>
+                    <p class="community-post-desc">Thin-skinned, juicy dumplings folded by hand using a 40-year-old family recipe.</p>
+                </div>
+            </div>
+            <div class="community-post">
+                <img src="https://images.unsplash.com/photo-1589302168068-964664d93dc0?auto=format&fit=crop&q=80&w=800" alt="Biryani" referrerpolicy="no-referrer">
+                <div class="community-post-body">
+                    <div class="community-post-author">By Priya S. · Indian</div>
+                    <div class="community-post-title">Hyderabadi Chicken Biryani</div>
+                    <p class="community-post-desc">Slow-cooked dum biryani with whole spices, caramelized onions, and fried cashews.</p>
+                </div>
+            </div>
+            <div class="community-post">
+                <img src="https://images.unsplash.com/photo-1529604278261-8bce21f82f64?auto=format&fit=crop&q=80&w=800" alt="Tacos" referrerpolicy="no-referrer">
+                <div class="community-post-body">
+                    <div class="community-post-author">By Carlos M. · Mexican</div>
+                    <div class="community-post-title">Street Tacos Al Pastor</div>
+                    <p class="community-post-desc">Marinated pork, fresh pineapple, cilantro, and onion on warm corn tortillas.</p>
+                </div>
+            </div>
+            <div class="community-post">
+                <img src="https://images.unsplash.com/photo-1541014741259-de529411b96a?auto=format&fit=crop&q=80&w=800" alt="Ramen" referrerpolicy="no-referrer">
+                <div class="community-post-body">
+                    <div class="community-post-author">By Yuki T. · Japanese</div>
+                    <div class="community-post-title">Tonkotsu Ramen</div>
+                    <p class="community-post-desc">18-hour pork bone broth with chashu, soft egg, nori, and bamboo shoots.</p>
+                </div>
+            </div>
+            <div class="community-post">
+                <img src="https://images.unsplash.com/photo-1574484284002-952d92456975?auto=format&fit=crop&q=80&w=800" alt="Croissants" referrerpolicy="no-referrer">
+                <div class="community-post-body">
+                    <div class="community-post-author">By Marie D. · French</div>
+                    <div class="community-post-title">Buttery Croissants</div>
+                    <p class="community-post-desc">Classic laminated dough croissants — 27 layers of pure golden perfection.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Submit Form -->
+    <section style="padding:4rem 2rem;border-bottom:2px solid #000">
+        <div style="display:grid;grid-template-columns:1fr;gap:3rem;max-width:700px;margin:0 auto">
+            <div class="submit-card">
+                <h3>Submit Your Recipe</h3>
+                <p style="margin-bottom:2rem;font-size:0.95rem;line-height:1.6">Have a family recipe you'd love to share with the Culina community? Submit it here and it might be featured on our platform.</p>
+                <form id="cookbook-form">
+                    <div class="form-group"><label>Recipe Name</label><input type="text" required placeholder="e.g. Grandma's Jollof Rice" /></div>
+                    <div class="form-group"><label>Your Name</label><input type="text" required placeholder="How you'd like to be credited" /></div>
+                    <div class="form-group"><label>Cuisine / Origin</label><input type="text" placeholder="e.g. West African, Italian..." /></div>
+                    <div class="form-group"><label>Recipe Description</label><textarea rows="4" required placeholder="Describe your dish briefly..."></textarea></div>
+                    <button type="submit" class="brutal-btn" style="width:100%">Submit Recipe</button>
+                    <p id="cookbook-success" style="display:none;margin-top:1rem;font-family:var(--font-mono);color:green;font-size:0.85rem;text-transform:uppercase">✓ Recipe submitted! We'll review it soon.</p>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-grid">
+            <div><h2 class="footer-title">STAY<br>HUNGRY</h2><p class="footer-copyright">© 2026 Culina Brutalism. All rights reserved.</p></div>
+            <div class="footer-links">
+                <a href="#" class="footer-link">Instagram</a><a href="#" class="footer-link">Twitter</a>
+                <a href="#" class="footer-link">Newsletter</a><a href="contact.html" class="footer-link">Contact</a>
+            </div>
+        </div>
+    </footer>
+</div>
+<script>
+    const hamburgerBtn = document.getElementById('hamburger-btn');
+    const navDrawer = document.getElementById('nav-drawer');
+    const drawerOverlay = document.getElementById('nav-drawer-overlay');
+    const drawerCloseBtn = document.getElementById('drawer-close-btn');
+    function openDrawer() { navDrawer.classList.add('is-open'); hamburgerBtn.classList.add('is-open'); document.body.style.overflow='hidden'; }
+    function closeDrawer() { navDrawer.classList.remove('is-open'); hamburgerBtn.classList.remove('is-open'); document.body.style.overflow=''; }
+    hamburgerBtn.addEventListener('click', () => navDrawer.classList.contains('is-open') ? closeDrawer() : openDrawer());
+    drawerCloseBtn.addEventListener('click', closeDrawer);
+    drawerOverlay.addEventListener('click', closeDrawer);
+    document.querySelectorAll('.drawer-link').forEach(l => l.addEventListener('click', closeDrawer));
+    document.getElementById('cookbook-form').addEventListener('submit', e => {
+        e.preventDefault(); document.getElementById('cookbook-success').style.display = 'block'; e.target.reset();
+    });
+</script>
+</body>
+</html>
