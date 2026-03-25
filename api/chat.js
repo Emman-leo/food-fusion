@@ -3,7 +3,9 @@
 //
 // Your frontend already calls `/api/chat` with `{ messages: [...] }`.
 
-const GROQ_CHAT_MODEL = process.env.GROQ_CHAT_MODEL || 'llama3-8b-8192';
+// Groq has decommissioned `llama3-8b-8192`.
+// Recommended replacement: `llama-3.1-8b-instant` (Groq deprecations page).
+const GROQ_CHAT_MODEL = process.env.GROQ_CHAT_MODEL || 'llama-3.1-8b-instant';
 const GROQ_TEMPERATURE = process.env.GROQ_TEMPERATURE ? Number(process.env.GROQ_TEMPERATURE) : 0.4;
 const GROQ_MAX_TOKENS = process.env.GROQ_MAX_TOKENS ? Number(process.env.GROQ_MAX_TOKENS) : 400;
 const GROQ_MAX_MESSAGES = process.env.GROQ_MAX_MESSAGES ? Number(process.env.GROQ_MAX_MESSAGES) : 20;
