@@ -1,0 +1,11 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "Remove empty api directory",
+			"type": "shell",
+			"command": "rmdir /S /Q api",
+			"isBackground": false
+		}
+	]
+}
