@@ -603,76 +603,82 @@ function closeModal() {
 init();
 
 // ===== AI CHAT WIDGET =====
-const chatHistory = [
-  {
-    role: 'system',
-    content: `You are Culina AI, a friendly cooking assistant for the Culina recipe platform. 
-You help users with recipe suggestions, cooking tips, ingredient substitutions, and general food questions. 
-Keep responses concise and practical. You have knowledge of all the recipes on the platform: 
-Margherita Pizza, Avocado Toast, Quinoa Salad, Berry Blast Smoothie Bowl, Honey Garlic Salmon, 
-Chocolate Lava Cake, Blueberry Pancakes, Caesar Salad, Spicy Chicken Banh Mi, Roasted Tomato Soup, 
-Ribeye Steak, New York Cheesecake, Apple Crisp, Mushroom Risotto, and Crispy Chickpea Buddha Bowl.`
-  }
-];
-
 const chatToggleBtn = document.getElementById('chat-toggle-btn');
-const chatBox = document.getElementById('chat-box');
-const chatIconOpen = document.getElementById('chat-icon-open');
-const chatIconClose = document.getElementById('chat-icon-close');
-const chatMessagesEl = document.getElementById('chat-messages');
-const chatInputEl = document.getElementById('chat-input');
-const chatSendBtn = document.getElementById('chat-send-btn');
 
-chatToggleBtn.addEventListener('click', () => {
-  const isOpen = chatBox.classList.toggle('open');
-  chatIconOpen.style.display = isOpen ? 'none' : 'block';
-  chatIconClose.style.display = isOpen ? 'block' : 'none';
-});
+if (chatToggleBtn) {
+  const chatHistory = [
+    {
+      role: 'system',
+      content: `You are Culina AI, a friendly cooking assistant for the Culina recipe platform. 
+  You help users with recipe suggestions, cooking tips, ingredient substitutions, and general food questions. 
+  Keep responses concise and practical. You have knowledge of all the recipes on the platform: 
+  Margherita Pizza, Avocado Toast, Quinoa Salad, Berry Blast Smoothie Bowl, Honey Garlic Salmon, 
+  Chocolate Lava Cake, Blueberry Pancakes, Caesar Salad, Spicy Chicken Banh Mi, Roasted Tomato Soup, 
+  Ribeye Steak, New York Cheesecake, Apple Crisp, Mushroom Risotto, and Crispy Chickpea Buddha Bowl.`
+    }
+  ];
 
-chatSendBtn.addEventListener('click', handleSend);
-chatInputEl.addEventListener('keydown', (e) => {
-  if (e.key === 'Enter') handleSend();
-});
+  const chatBox = document.getElementById('chat-box');
+  const chatIconOpen = document.getElementById('chat-icon-open');
+  const chatIconClose = document.getElementById('chat-icon-close');
+  const chatMessagesEl = document.getElementById('chat-messages');
+  const chatInputEl = document.getElementById('chat-input');
+  const chatSendBtn = document.getElementById('chat-send-btn');
 
-function sendChip(text) {
-  const chips = document.getElementById('chat-chips');
-  if (chips) chips.remove();
-  handleSend(text);
-}
+  chatToggleBtn.addEventListener('click', () => {
+    const isOpen = chatBox.classList.toggle('open');
+    chatIconOpen.style.display = isOpen ? 'none' : 'block';
+    chatIconClose.style.display = isOpen ? 'block' : 'none';
+  });
 
-function handleSend(prefill) {
-  const message = typeof prefill === 'string' ? prefill : chatInputEl.value.trim();
-  if (!message) return;
-  chatInputEl.value = '';
+  chatSendBtn.addEventListener('click', handleSend);
+  chatInputEl.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') handleSend();
+  });
 
-  appendMessage('user', message);
-  const thinking = appendMessage('thinking', '...... thinking');
+  function sendChip(text) {
+    const chips = document.getElementById('chat-chips');
+    if (chips) chips.remove();
+    handleSend(text);
+  }
 
-  chatHistory.push({ role: 'user', content: message });
+  // expose sendChip globally so inline onclick handlers can call it
+  window.sendChip = sendChip;
 
-  fetch('/api/chat', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ messages: chatHistory })
-  })
-    .then(res => res.json())
-    .then(data => {
-      thinking.remove();
-      const reply = data.choices?.[0]?.message?.content || 'Sorry, I could not get a response.';
-      chatHistory.push({ role: 'assistant', content: reply });
-      appendMessage('assistant', reply);
+  function handleSend(prefill) {
+    const message = typeof prefill === 'string' ? prefill : chatInputEl.value.trim();
+    if (!message) return;
+    chatInputEl.value = '';
+
+    appendMessage('user', message);
+    const thinking = appendMessage('thinking', '...... thinking');
+
+    chatHistory.push({ role: 'user', content: message });
+
+    fetch('/api/chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ messages: chatHistory })
     })
-    .catch(() => {
-      thinking.remove();
-      appendMessage('assistant', 'Something went wrong. Please try again.');
-    });
-}
+      .then(res => res.json())
+      .then(data => {
+        thinking.remove();
+        const reply = data.choices?.[0]?.message?.content || 'Sorry, I could not get a response.';
+        chatHistory.push({ role: 'assistant', content: reply });
+        appendMessage('assistant', reply);
+      })
+      .catch(() => {
+        thinking.remove();
+        appendMessage('assistant', 'Something went wrong. Please try again.');
+      });
+  }
 
-function appendMessage(role, text) {
-  const msg = document.createElement('div');
-  msg.className = `chat-msg ${role}`;
-  msg.innerHTML = `<p>${text}</p>`;
-  chatMessagesEl.appendChild(msg);
-  chatMessagesEl.scrollTop = chatMessagesEl.scrollHeight;
-  return msg;
+  function appendMessage(role, text) {
+    const msg = document.createElement('div');
+    msg.className = `chat-msg ${role}`;
+    msg.innerHTML = `<p>${text}</p>`;
+    chatMessagesEl.appendChild(msg);
+    chatMessagesEl.scrollTop = chatMessagesEl.scrollHeight;
+    return msg;
+  }
 }
