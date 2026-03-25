@@ -603,18 +603,19 @@ function closeModal() {
 init();
 
 // ===== AI CHAT WIDGET =====
-const chatToggleBtn = document.getElementById('chat-toggle-btn');
+(function () {
+  const chatToggleBtn = document.getElementById('chat-toggle-btn');
+  if (!chatToggleBtn) return;
 
-if (chatToggleBtn) {
   const chatHistory = [
     {
       role: 'system',
       content: `You are Culina AI, a friendly cooking assistant for the Culina recipe platform. 
-  You help users with recipe suggestions, cooking tips, ingredient substitutions, and general food questions. 
-  Keep responses concise and practical. You have knowledge of all the recipes on the platform: 
-  Margherita Pizza, Avocado Toast, Quinoa Salad, Berry Blast Smoothie Bowl, Honey Garlic Salmon, 
-  Chocolate Lava Cake, Blueberry Pancakes, Caesar Salad, Spicy Chicken Banh Mi, Roasted Tomato Soup, 
-  Ribeye Steak, New York Cheesecake, Apple Crisp, Mushroom Risotto, and Crispy Chickpea Buddha Bowl.`
+You help users with recipe suggestions, cooking tips, ingredient substitutions, and general food questions. 
+Keep responses concise and practical. You have knowledge of all the recipes on the platform: 
+Margherita Pizza, Avocado Toast, Quinoa Salad, Berry Blast Smoothie Bowl, Honey Garlic Salmon, 
+Chocolate Lava Cake, Blueberry Pancakes, Caesar Salad, Spicy Chicken Banh Mi, Roasted Tomato Soup, 
+Ribeye Steak, New York Cheesecake, Apple Crisp, Mushroom Risotto, and Crispy Chickpea Buddha Bowl.`
     }
   ];
 
@@ -631,19 +632,16 @@ if (chatToggleBtn) {
     chatIconClose.style.display = isOpen ? 'block' : 'none';
   });
 
-  chatSendBtn.addEventListener('click', handleSend);
+  chatSendBtn.addEventListener('click', () => handleSend());
   chatInputEl.addEventListener('keydown', (e) => {
     if (e.key === 'Enter') handleSend();
   });
 
-  function sendChip(text) {
+  window.sendChip = function (text) {
     const chips = document.getElementById('chat-chips');
     if (chips) chips.remove();
     handleSend(text);
-  }
-
-  // expose sendChip globally so inline onclick handlers can call it
-  window.sendChip = sendChip;
+  };
 
   function handleSend(prefill) {
     const message = typeof prefill === 'string' ? prefill : chatInputEl.value.trim();
@@ -681,4 +679,4 @@ if (chatToggleBtn) {
     chatMessagesEl.scrollTop = chatMessagesEl.scrollHeight;
     return msg;
   }
-}
+})();
