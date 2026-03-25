@@ -86,6 +86,31 @@
             </div>
         </div>
     </footer>
+
+    <!-- ===== AI CHAT WIDGET ===== -->
+    <button id="chat-toggle-btn" class="chat-toggle-btn" type="button" aria-label="Toggle Culina AI chat">
+        <span id="chat-icon-open" class="chat-icon-open" style="display:block;">AI</span>
+        <span id="chat-icon-close" class="chat-icon-close" style="display:none;">X</span>
+    </button>
+
+    <div id="chat-box" class="chat-box" aria-hidden="true">
+        <div class="chat-header">
+            <div class="chat-title">Culina AI</div>
+        </div>
+
+        <div id="chat-messages" class="chat-messages" role="log" aria-live="polite"></div>
+
+        <div id="chat-chips" class="chat-chips" aria-label="Quick prompts">
+            <button class="chat-chip" type="button" onclick="sendChip('Give me a vegetarian dinner using quinoa.');">Quinoa dinner</button>
+            <button class="chat-chip" type="button" onclick="sendChip('How can I make a mushroom risotto?');">Mushroom risotto</button>
+            <button class="chat-chip" type="button" onclick="sendChip('Can I use oat milk instead of almond milk?');">Dairy swap</button>
+        </div>
+
+        <div class="chat-input-row">
+            <input id="chat-input" class="chat-input" type="text" placeholder="Ask about recipes, substitutions, and cooking tips..." autocomplete="off" />
+            <button id="chat-send-btn" class="chat-send-btn" type="button">Send</button>
+        </div>
+    </div>
 </div>
 <script src="script.js"></script>
 <script>

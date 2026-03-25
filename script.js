@@ -663,7 +663,7 @@ if (chatToggleBtn) {
       .then(res => res.json())
       .then(data => {
         thinking.remove();
-        const reply = data.choices?.[0]?.message?.content || 'Sorry, I could not get a response.';
+        const reply = data?.choices?.[0]?.message?.content || data?.error || 'Sorry, I could not get a response.';
         chatHistory.push({ role: 'assistant', content: reply });
         appendMessage('assistant', reply);
       })
@@ -676,7 +676,10 @@ if (chatToggleBtn) {
   function appendMessage(role, text) {
     const msg = document.createElement('div');
     msg.className = `chat-msg ${role}`;
-    msg.innerHTML = `<p>${text}</p>`;
+    const p = document.createElement('p');
+    // Avoid HTML injection from model output; preserve formatting via CSS (`white-space: pre-wrap`).
+    p.textContent = text;
+    msg.appendChild(p);
     chatMessagesEl.appendChild(msg);
     chatMessagesEl.scrollTop = chatMessagesEl.scrollHeight;
     return msg;
