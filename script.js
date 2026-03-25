@@ -660,16 +660,23 @@ if (chatToggleBtn) {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ messages: chatHistory })
     })
-      .then(res => res.json())
+      .then(async (res) => {
+        // If the backend returns HTML (common on deployment errors),
+        // `res.json()` will throw ("Unexpected token '<'").
+        const contentType = res.headers.get('content-type') || '';
+        if (contentType.includes('application/json')) return res.json();
+        const text = await res.text().catch(() => '');
+        throw new Error(text || `Request failed with status ${res.status}`);
+      })
       .then(data => {
         thinking.remove();
         const reply = data?.choices?.[0]?.message?.content || data?.error || 'Sorry, I could not get a response.';
         chatHistory.push({ role: 'assistant', content: reply });
         appendMessage('assistant', reply);
       })
-      .catch(() => {
+      .catch((err) => {
         thinking.remove();
-        appendMessage('assistant', 'Something went wrong. Please try again.');
+        appendMessage('assistant', err?.message || 'Something went wrong. Please try again.');
       });
   }
 
